@@ -123,10 +123,4 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
-.gitignore
-.idea/
-Pipfile
-Pipfile.lock
-images/
-text_detect/
-text_extract/
+
