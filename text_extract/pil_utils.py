@@ -42,7 +42,7 @@ class TextProcessor:
 
     @staticmethod
     def is_useless(text: str):
-        ignore = ['Chơi cho vui', 'Câu hỏi']
+        ignore = ['Chơi cho vui', 'Câu hỏi', 'TRỰC TIẾP']
         return not any(x in text for x in ignore)
 
 

@@ -3,7 +3,7 @@ import asyncio
 from PIL import Image, ImageFilter
 from pytesseract import image_to_string
 
-from text_extract.pil_utils import calculate_time
+from text_extract.pil_utils import calculate_time, PilUtils
 
 
 class Tesseract:
@@ -12,7 +12,7 @@ class Tesseract:
 
     @calculate_time
     def get_text(self) -> str:
-        # img = PilUtils.change_contrast(img, 100)
-        img = self.image.filter(ImageFilter.SMOOTH_MORE)
-        text = image_to_string(img, lang='vie')
+        self.image = PilUtils.change_contrast(self.image, 12)
+        self.image = self.image.filter(ImageFilter.SMOOTH_MORE)
+        text = image_to_string(self.image, lang='vie')
         return text
