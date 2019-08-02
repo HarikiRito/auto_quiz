@@ -7,19 +7,12 @@ import glob
 import time
 
 from text_extract.pil_utils import PilUtils, TextProcessor
+from text_extract.tesseract import Tesseract
 
 load_dotenv()
 
-start = time.time()
-print(os.environ)
 list_file = glob.glob("../images/*.jpg")
-img: Image = Image.open(list_file[2]).convert('LA')
-# img = PilUtils.change_contrast(img, 100)
-img = img.filter(ImageFilter.SMOOTH_MORE)
-text = image_to_string(img, lang='vie')
-end = time.time()
-print(text)
-print(TextProcessor.split(text))
-print(end - start)
-
-img.save('test.png')
+for path in list_file:
+    img = Tesseract(path)
+    text = img.get_text()
+    print(TextProcessor.split(text))

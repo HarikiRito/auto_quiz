@@ -1,3 +1,5 @@
+import time
+
 import PIL
 from PIL import Image
 import PIL.ImageOps
@@ -33,9 +35,30 @@ class TextProcessor:
     def split(text: str):
         list_item = [item.replace('\n', ' ') for item in
                      text.split('\n\n') if TextProcessor.is_useless(item)]
+
+        if len(list_item) > 4:
+            list_item = list_item[-4:]
         return list_item
 
     @staticmethod
     def is_useless(text: str):
         ignore = ['Chơi cho vui', 'Câu hỏi']
         return not any(x in text for x in ignore)
+
+
+def calculate_time(func):
+    # added arguments inside the inner1,
+    # if function takes any arguments,
+    # can be added like this.
+    def inner1(*args, **kwargs):
+        # storing time before function execution
+        begin = time.time()
+
+        res = func(*args, **kwargs)
+
+        # storing time after function execution
+        end = time.time()
+        print("Total time taken in : ", func.__name__, end - begin)
+        return res
+
+    return inner1
