@@ -12,7 +12,6 @@ opencv-python = "*"
 pytesseract = "*"
 pillow = "*"
 python-dotenv = "*"
-dotenv = "*"
 
 [requires]
 python_version = "3.7"

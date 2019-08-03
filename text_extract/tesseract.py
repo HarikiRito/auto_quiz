@@ -11,8 +11,9 @@ class Tesseract:
         self.image = Image.open(path).convert('LA')
 
     @calculate_time
-    def get_text(self) -> str:
-        self.image = PilUtils.change_contrast(self.image, 12)
-        self.image = self.image.filter(ImageFilter.SMOOTH_MORE)
+    def get_text(self, contrast: int = 12, filter_type: ImageFilter = ImageFilter.SMOOTH_MORE) -> str:
+        self.image = PilUtils.change_contrast(self.image, contrast)
+        self.image = self.image.filter(filter_type)
         text = image_to_string(self.image, lang='vie')
         return text
+
