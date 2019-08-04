@@ -13,6 +13,7 @@ pytesseract = "*"
 pillow = "*"
 python-dotenv = "*"
 google-cloud-vision = "*"
+pyautogui = "*"
 
 [requires]
 python_version = "3.7"
