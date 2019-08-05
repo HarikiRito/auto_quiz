@@ -1,8 +1,11 @@
 import time
+from typing import List
 
+from google import google
 import PIL
 from PIL import Image
 import PIL.ImageOps
+from google.modules.standard_search import GoogleResult
 
 
 class PilUtils:
@@ -33,7 +36,7 @@ class PilUtils:
 class TextProcessor:
     @staticmethod
     def split(text: str):
-        list_item = [item.replace('\n', ' ') for item in
+        list_item = [TextProcessor.clean_text(item) for item in
                      text.split('\n\n') if TextProcessor.is_useless(item)]
 
         if len(list_item) > 4:
@@ -41,9 +44,37 @@ class TextProcessor:
         return list_item
 
     @staticmethod
+    def clean_text(item: str):
+        item = item.replace('\n', ' ')
+        item = item.replace('\'', '')
+        item = item.replace('\\', '')
+        item = item.replace('"', '')
+        item = item.replace('/', '')
+        item = item.replace('_', '')
+        item = item.replace(' ⁄', '')
+        item = item.replace('`', '')
+        item = item.replace('.', '')
+        item = item.replace('—', '')
+        item = item.replace('“', '')
+        item = item.replace('<', '')
+        item = item.replace('=', '')
+        return item
+
+    @staticmethod
     def is_useless(text: str):
         ignore = ['Chơi cho vui', 'Câu hỏi', 'TRỰC TIẾP']
         return not any(x in text for x in ignore)
+
+
+class GoogleSearch:
+    result: List[GoogleResult] = None
+
+    def __init__(self, q: str, num: int = 1):
+        self.q = q
+        self.num = num
+
+    def search(self, num: int = 1):
+        self.result = google.search(self.q, self.num)
 
 
 def calculate_time(func):

@@ -14,6 +14,10 @@ pillow = "*"
 python-dotenv = "*"
 google-cloud-vision = "*"
 pyautogui = "*"
+python3-xlib = "*"
+flask = "*"
+flask-restful = "*"
+flask-jsonpify = "*"
 
 [requires]
 python_version = "3.7"
