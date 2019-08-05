@@ -18,6 +18,13 @@ python3-xlib = "*"
 flask = "*"
 flask-restful = "*"
 flask-jsonpify = "*"
+google = "*"
+beautifulsoup4 = "*"
+requests = "*"
+unidecode = "*"
+vcrpy = "*"
+future = "*"
+fake-useragent = "*"
 
 [requires]
 python_version = "3.7"

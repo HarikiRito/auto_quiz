@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from tkinter import *
 import numpy as np
 import pyautogui
@@ -16,6 +17,10 @@ class BuilderUI:
         self.y1 = self.make_entry()
         self.x2 = self.make_entry()
         self.y2 = self.make_entry()
+        self.enable_vision = IntVar()
+        self.enable_parse = IntVar()
+        self.enable_search = IntVar()
+        self.result = None
 
     def make_entry(self, width=5, **options):
         entry = Entry(self.tk, **options)
@@ -30,9 +35,9 @@ class BuilderUI:
         Label(self.tk, text='y2').grid(row=1, column=2)
 
         self.x1.insert(END, '0')
-        self.y1.insert(END, '0')
-        self.x2.insert(END, '500')
-        self.y2.insert(END, '500')
+        self.y1.insert(END, '480')
+        self.x2.insert(END, '390')
+        self.y2.insert(END, '710')
 
         self.x1.grid(row=0, column=1)
         self.y1.grid(row=0, column=3)
@@ -43,6 +48,10 @@ class BuilderUI:
         b = Button(self.tk, text='Set', command=self.confirm_set_coord)
         b.config(width=5)
         b.grid(row=2, column=1)
+
+        Checkbutton(self.tk, text='Enable Vision', variable=self.enable_vision).grid(row=2, column=5, sticky=W)
+        Checkbutton(self.tk, text="Enable Parse", variable=self.enable_parse).grid(row=2, column=6, sticky=W)
+        Checkbutton(self.tk, text="Enable Search", variable=self.enable_search).grid(row=2, column=7, sticky=W)
 
     @calculate_time
     def confirm_set_coord(self):
@@ -61,16 +70,24 @@ class BuilderUI:
         region = a + c
         image = pyautogui.screenshot(region=region)
         image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-        cv2.imwrite("test.png", image)
-        abs_path = os.path.abspath('test.jpg')
-        text = detect_text(abs_path)
-        result = self.split_text_vision(text)
-        print(result)
+        file_name = '{}.png'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+        print(file_name)
+        cv2.imwrite(file_name, image)
+        abs_path = os.path.abspath('test.png')
+        if self.enable_search.get():
+            text = detect_text(abs_path)
+            if self.enable_parse.get():
+                self.result = self.split_text_vision(text)
+        # result = self.split_text_vision(text)
+        # print(result)
 
     def split_text_vision(self, text: str):
-        q: str = ''
-        q, a = text.split('?')
-        question = q.replace('\n', ' ') + '?'
-        answers = [item for item in a.split('\n') if item]
+        try:
+            q: str = ''
+            q, a = text.split('?')
+            question = q.replace('\n', ' ') + '?'
+            answers = [item for item in a.split('\n') if item]
 
-        return [question, answers]
+            return [question, answers]
+        except Exception as e:
+            pass

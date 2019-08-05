@@ -77,6 +77,7 @@ class GoogleSearch:
         self.result = google.search(self.q, self.num)
 
 
+
 def calculate_time(func):
     # added arguments inside the inner1,
     # if function takes any arguments,

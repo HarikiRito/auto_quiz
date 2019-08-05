@@ -2,6 +2,7 @@ import os
 
 import cv2
 from dotenv import load_dotenv
+from datetime import datetime
 from PIL import Image, ImageFilter
 from pytesseract import image_to_string
 import glob
