@@ -1,3 +1,4 @@
+import asyncio
 import os
 from datetime import datetime
 from tkinter import *
@@ -6,8 +7,10 @@ import pyautogui
 import imutils
 import cv2
 
+from api.seach import search_all
 from text_extract.clould_vision import detect_text
 from text_extract.pil_utils import calculate_time, TextProcessor
+from text_extract.text_utils import TextU
 
 
 class BuilderUI:
@@ -20,6 +23,7 @@ class BuilderUI:
         self.enable_vision = IntVar()
         self.enable_parse = IntVar()
         self.enable_search = IntVar()
+        self.enable_save_image = IntVar()
         self.result = None
 
     def make_entry(self, width=5, **options):
@@ -52,9 +56,27 @@ class BuilderUI:
         Checkbutton(self.tk, text='Enable Vision', variable=self.enable_vision).grid(row=2, column=5, sticky=W)
         Checkbutton(self.tk, text="Enable Parse", variable=self.enable_parse).grid(row=2, column=6, sticky=W)
         Checkbutton(self.tk, text="Enable Search", variable=self.enable_search).grid(row=2, column=7, sticky=W)
+        Checkbutton(self.tk, text="Save Image", variable=self.enable_save_image).grid(row=3, column=5, sticky=W)
 
     @calculate_time
     def confirm_set_coord(self):
+        region = self.calculate_region()
+        image = pyautogui.screenshot(region=region)
+        image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+        file_name = '{}.png'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+
+        if self.enable_save_image.get():
+            cv2.imwrite(file_name, image)
+        abs_path = os.path.abspath('test.png')
+        if self.enable_search.get():
+            text = detect_text(abs_path)
+            self.result = TextU.split_from_vision(text)
+        print(self.result)
+        q, answers = self.result
+        search_result = asyncio.run(search_all(q, answers))
+        print(search_result)
+
+    def calculate_region(self):
         x1 = int(self.x1.get())
         y1 = int(self.y1.get())
         x2 = int(self.x2.get())
@@ -63,31 +85,8 @@ class BuilderUI:
             x2 = x1 + 300
         if y2 <= y1:
             y2 = y1 + 300
-
         a = [x1, y1]
         b = [x2, y2]
         c = list(np.subtract(b, a))
         region = a + c
-        image = pyautogui.screenshot(region=region)
-        image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
-        file_name = '{}.png'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
-        print(file_name)
-        cv2.imwrite(file_name, image)
-        abs_path = os.path.abspath('test.png')
-        if self.enable_search.get():
-            text = detect_text(abs_path)
-            if self.enable_parse.get():
-                self.result = self.split_text_vision(text)
-        # result = self.split_text_vision(text)
-        # print(result)
-
-    def split_text_vision(self, text: str):
-        try:
-            q: str = ''
-            q, a = text.split('?')
-            question = q.replace('\n', ' ') + '?'
-            answers = [item for item in a.split('\n') if item]
-
-            return [question, answers]
-        except Exception as e:
-            pass
+        return region

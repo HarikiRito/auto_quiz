@@ -36,7 +36,7 @@ class TesseractOpenCV:
         # self.simple_thresholding()
         # self.blurring()
         self.remove_noise_and_smooth()
-        # self.apply_brightness_contrast(contrast=2)
+        # self.apply_brightness_contrast(contrast=1)
 
     def scale(self):
         scale_percent = 60  # percent of original size

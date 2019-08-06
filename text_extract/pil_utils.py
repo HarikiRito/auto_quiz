@@ -62,20 +62,19 @@ class TextProcessor:
 
     @staticmethod
     def is_useless(text: str):
-        ignore = ['Chơi cho vui', 'Câu hỏi', 'TRỰC TIẾP']
+        ignore = ['Chơi cho vui', 'Câu hỏi', 'TRỰC TIẾP', 'of', 'Question']
         return not any(x in text for x in ignore)
 
 
 class GoogleSearch:
     result: List[GoogleResult] = None
 
-    def __init__(self, q: str, num: int = 1):
+    def __init__(self, q: str, num: int = 2):
         self.q = q
         self.num = num
 
     def search(self, num: int = 1):
         self.result = google.search(self.q, self.num)
-
 
 
 def calculate_time(func):
