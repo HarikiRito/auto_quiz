@@ -25,6 +25,8 @@ unidecode = "*"
 vcrpy = "*"
 future = "*"
 fake-useragent = "*"
+flask-api = "*"
+flask-cors = "*"
 
 [requires]
 python_version = "3.7"
