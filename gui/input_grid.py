@@ -7,7 +7,6 @@ import pyautogui
 import imutils
 import cv2
 
-from api.seach import search_all
 from text_extract.clould_vision import detect_text
 from text_extract.pil_utils import calculate_time, TextProcessor
 from text_extract.text_utils import TextU
@@ -39,7 +38,7 @@ class BuilderUI:
         Label(self.tk, text='y2').grid(row=1, column=2)
 
         self.x1.insert(END, '0')
-        self.y1.insert(END, '480')
+        self.y1.insert(END, '500')
         self.x2.insert(END, '390')
         self.y2.insert(END, '710')
 
@@ -64,6 +63,7 @@ class BuilderUI:
         image = pyautogui.screenshot(region=region)
         image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
         file_name = '{}.png'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
+        cv2.imwrite(file_name, image)
 
         if self.enable_save_image.get():
             cv2.imwrite(file_name, image)
@@ -73,8 +73,6 @@ class BuilderUI:
             self.result = TextU.split_from_vision(text)
         print(self.result)
         q, answers = self.result
-        search_result = asyncio.run(search_all(q, answers))
-        print(search_result)
 
     def calculate_region(self):
         x1 = int(self.x1.get())
