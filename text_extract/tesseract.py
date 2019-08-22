@@ -32,14 +32,14 @@ class TesseractOpenCV:
     def process(self, color=cv2.COLOR_BGR2GRAY):
         # self.image = cv2.bitwise_not(self.image)
         self.image = cv2.cvtColor(self.image, color)
-        # self.scale()
+        self.scale()
         # self.simple_thresholding()
         # self.blurring()
-        self.remove_noise_and_smooth()
+        # self.remove_noise_and_smooth()
         # self.apply_brightness_contrast(contrast=1)
 
     def scale(self):
-        scale_percent = 60  # percent of original size
+        scale_percent = 110  # percent of original size
         width = int(self.image.shape[1] * scale_percent / 100)
         height = int(self.image.shape[0] * scale_percent / 100)
         dim = (width, height)
