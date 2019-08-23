@@ -8,7 +8,7 @@ import imutils
 import cv2
 
 from text_extract.clould_vision import detect_text
-from text_extract.pil_utils import calculate_time, TextProcessor
+from text_extract.pil_utils import calculate_time, TP
 from text_extract.text_utils import TextU
 
 

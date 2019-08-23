@@ -1,4 +1,4 @@
-from text_extract.pil_utils import TextProcessor
+from text_extract.pil_utils import TP
 
 
 class TextU:
@@ -7,7 +7,7 @@ class TextU:
         try:
             q: str = ''
             q, a = text.split('?')
-            q = ' '.join([q_line for q_line in q.split('\n') if TextProcessor.is_useless(q_line)])
+            q = ' '.join([q_line for q_line in q.split('\n') if TP.is_useless(q_line)])
             question = q.replace('\n', ' ') + '?'
             answers = [item for item in a.split('\n') if item]
 

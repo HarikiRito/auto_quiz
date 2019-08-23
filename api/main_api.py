@@ -10,7 +10,7 @@ from flask_cors import CORS
 
 from api.seach import google_search_get
 from text_extract.clould_vision import detect_text
-from text_extract.pil_utils import TextProcessor
+from text_extract.pil_utils import TP
 from text_extract.tesseract import TesseractOpenCV
 from text_extract.text_utils import TextU
 
@@ -48,21 +48,23 @@ def notes_list():
         y2: str = request.data.get('y2')
         region = calculate_region(x1, y1, x2, y2)
         image = pyautogui.screenshot(region=region)
-        image = cv2.imread('gui/2019-08-22_21-31-19.png')
-        # image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+        image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
+        # image = cv2.imread('gui/2019-08-22_21-31-19.png')
         file_name = 'gui/{}.png'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
         # cv2.imwrite(file_name, image)
-        abs_path = os.path.abspath('gui/2019-08-22_21-29-34.png')
+        abs_path = os.path.abspath('gui/2019-08-23_21-28-30.png')
         # text = detect_text(abs_path)
         # result = TextU.split_from_vision(text)
 
         img = TesseractOpenCV(abs_path)
         img.process()
         text = img.get_text()
-        result = TextProcessor.split(text)
+        # print(text)
+        result = TP.split(text)
         return {
             'question': result[0],
-            'answers': [item for item in result][1:]
+            'answers': [item for item in result][1:],
+            'text': text
         }
 
     # request.method == 'GET'

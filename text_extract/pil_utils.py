@@ -33,11 +33,13 @@ class PilUtils:
         return PIL.ImageOps.invert(img)
 
 
-class TextProcessor:
+class TP:
     @staticmethod
     def split(text: str):
-        list_item = [TextProcessor.clean_text(item) for item in
-                     text.split('\n\n') if TextProcessor.is_useless(item)]
+        q, a = text.split('?')
+        list_item = [TP.clean_text(item) for item in
+                     a.split('\n') if len(item) > 0]
+        list_item = [TP.clean_text(q)] + list_item
 
         if len(list_item) > 4:
             list_item = list_item[-4:]
@@ -45,6 +47,7 @@ class TextProcessor:
 
     @staticmethod
     def clean_text(item: str):
+        print(item)
         item = item.replace('\n', ' ')
         item = item.replace('\'', '')
         item = item.replace('\\', '')
@@ -52,10 +55,10 @@ class TextProcessor:
         item = item.replace('/', '')
         item = item.replace('_', '')
         item = item.replace(' ⁄', '')
-        item = item.replace('`', '')
         item = item.replace('.', '')
         item = item.replace('—', '')
         item = item.replace('“', '')
+        item = item.replace('”', '')
         item = item.replace('<', '')
         item = item.replace('=', '')
         return item
