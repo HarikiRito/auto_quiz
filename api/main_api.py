@@ -51,8 +51,9 @@ def notes_list():
         image = cv2.cvtColor(np.array(image), cv2.COLOR_RGB2BGR)
         # image = cv2.imread('gui/2019-08-22_21-31-19.png')
         file_name = 'gui/{}.png'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
-        # cv2.imwrite(file_name, image)
-        abs_path = os.path.abspath('gui/2019-08-23_21-28-30.png')
+        cv2.imwrite(file_name, image)
+        abs_path = os.path.abspath(file_name)
+        # abs_path = os.path.abspath('gui/2019-08-24_21-14-26.png')
         # text = detect_text(abs_path)
         # result = TextU.split_from_vision(text)
 
