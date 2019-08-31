@@ -53,20 +53,25 @@ def notes_list():
         file_name = 'gui/{}.png'.format(datetime.now().strftime('%Y-%m-%d_%H-%M-%S'))
         cv2.imwrite(file_name, image)
         abs_path = os.path.abspath(file_name)
-        # abs_path = os.path.abspath('gui/2019-08-24_21-14-26.png')
+        # abs_path = os.path.abspath('gui/2019-08-28_22-37-08.png')
         # text = detect_text(abs_path)
         # result = TextU.split_from_vision(text)
-
         img = TesseractOpenCV(abs_path)
         img.process()
         text = img.get_text()
-        # print(text)
-        result = TP.split(text)
-        return {
-            'question': result[0],
-            'answers': [item for item in result][1:],
-            'text': text
-        }
+        try:
+            print(text)
+            result = TP.split(text)
+            return {
+                'question': result[0],
+                'answers': [item for item in result][1:],
+                'text': text
+            }
+        except Exception as e:
+            return {
+                'error': e.args[0],
+                'text': text
+            }
 
     # request.method == 'GET'
 
